@@ -26,7 +26,7 @@ Building agentic AI frameworks and making production AI accessible on hybrid clo
 
 ### Connect
 
-[LinkedIn](https://linkedin.com/in/YOUR-LINKEDIN) · [Email](mailto:YOUR-EMAIL)
+[LinkedIn](https://www.linkedin.com/in/duggalaakanksha/) · [Email](mailto:aduggal@redhat.com)
 
 ---
 
