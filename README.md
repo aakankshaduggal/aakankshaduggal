@@ -14,6 +14,12 @@ Building agentic AI frameworks and making production AI accessible on hybrid clo
 [**Red Hat Emerging Technologies**](https://github.com/redhat-et) — Applied research & tooling
 
 [**OGX**](https://github.com/ogx-ai) — Open-source AI agents
+
+[**Exgentic**](https://github.com/exgentic) — Agentic AI frameworks
+
+[**MLflow**](https://github.com/mlflow) — ML lifecycle & experiment tracking
+
+[**Open Data Hub**](https://github.com/opendatahub-io) — Open source AI/ML platform on Kubernetes
 <!-- /CONTRIBUTIONS -->
 
 ---

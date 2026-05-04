@@ -20,6 +20,7 @@ ORGS = [
     ("ogx-ai", "OGX", "Open-source AI agents"),
     ("exgentic", "Exgentic", "Agentic AI frameworks"),
     ("mlflow", "MLflow", "ML lifecycle & experiment tracking"),
+    ("opendatahub-io", "Open Data Hub", "Open source AI/ML platform on Kubernetes"),
 ]
 
 
@@ -44,16 +45,8 @@ def get_merged_pr_count():
     return data["total_count"]
 
 
-def check_org_contributions():
-    active_orgs = []
-    for org_id, name, desc in ORGS:
-        data = api("/search/issues", {
-            "q": f"author:{USER}+type:pr+is:merged+org:{org_id}",
-            "per_page": "1",
-        })
-        if data["total_count"] > 0:
-            active_orgs.append((org_id, name, desc))
-    return active_orgs
+def get_org_contributions():
+    return [(org_id, name, desc) for org_id, name, desc in ORGS]
 
 
 def replace_section(readme, tag, content):
@@ -84,7 +77,7 @@ def main():
 
     profile = get_profile()
     pr_count = get_merged_pr_count()
-    orgs = check_org_contributions()
+    orgs = get_org_contributions()
 
     readme = replace_section(readme, "STATS", build_stats_section(profile, pr_count))
     readme = replace_section(readme, "CONTRIBUTIONS", build_contributions_section(orgs))
