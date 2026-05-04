@@ -24,6 +24,12 @@ Building agentic AI frameworks and making production AI accessible on hybrid clo
 
 ---
 
+### Languages & tools
+
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=aakankshaduggal&layout=compact&langs_count=8&hide_title=true&hide_border=true&theme=transparent" alt="Top Languages" />
+
+---
+
 ### Connect
 
 [LinkedIn](https://www.linkedin.com/in/duggalaakanksha/) · [Email](mailto:aduggal@redhat.com)
