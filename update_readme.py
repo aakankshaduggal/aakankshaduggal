@@ -14,12 +14,12 @@ HEADERS = {"Accept": "application/vnd.github+json", "User-Agent": USER}
 if TOKEN:
     HEADERS["Authorization"] = f"Bearer {TOKEN}"
 
-PINNED_REPOS = [
-    "instructlab/sdg",
-    "redhat-et/homomorphic-learning",
-    "ogx-ai/ogx",
-    "redhat-et/time-to-merge-tool",
-    "opendatahub-io/skills-registry",
+ORGS = [
+    ("instructlab", "InstructLab", "Synthetic data generation & LLM alignment"),
+    ("redhat-et", "Red Hat Emerging Technologies", "Applied research & tooling"),
+    ("ogx-ai", "OGX", "Open-source AI agents"),
+    ("exgentic", "Exgentic", "Agentic AI frameworks"),
+    ("mlflow", "MLflow", "ML lifecycle & experiment tracking"),
 ]
 
 
@@ -44,39 +44,16 @@ def get_merged_pr_count():
     return data["total_count"]
 
 
-def get_top_contributions():
-    repo_counts = {}
-    for repo in PINNED_REPOS:
+def check_org_contributions():
+    active_orgs = []
+    for org_id, name, desc in ORGS:
         data = api("/search/issues", {
-            "q": f"author:{USER}+type:pr+is:merged+repo:{repo}",
+            "q": f"author:{USER}+type:pr+is:merged+org:{org_id}",
             "per_page": "1",
         })
-        count = data["total_count"]
-        if count > 0:
-            repo_counts[repo] = count
-
-    ranked = sorted(repo_counts.items(), key=lambda x: -x[1])
-    return ranked
-
-
-def get_recent_prs():
-    data = api("/search/issues", {
-        "q": f"author:{USER}+type:pr+is:merged",
-        "per_page": "5",
-        "sort": "created",
-        "order": "desc",
-    })
-    results = []
-    for item in data.get("items", []):
-        parts = item["repository_url"].split("/")
-        repo = f"{parts[-2]}/{parts[-1]}"
-        title = item["title"]
-        if len(title) > 60:
-            title = title[:57] + "..."
-        date = item["created_at"][:10]
-        url = item["html_url"]
-        results.append((title, repo, date, url))
-    return results
+        if data["total_count"] > 0:
+            active_orgs.append((org_id, name, desc))
+    return active_orgs
 
 
 def replace_section(readme, tag, content):
@@ -91,20 +68,11 @@ def build_stats_section(profile, pr_count):
     return f"**{pr_count}** merged PRs · **{repos}** public repos · **{followers}** followers"
 
 
-def build_contributions_section(contributions):
+def build_contributions_section(orgs):
     lines = []
-    for repo, count in contributions:
-        lines.append(f"[`{repo}`](https://github.com/{repo}) | **{count}** PRs")
-    header = "Repository | Contributions\n:-- | :--"
-    return header + "\n" + "\n".join(lines)
-
-
-def build_recent_section(prs):
-    lines = []
-    for title, repo, date, url in prs:
-        lines.append(f"[{title}]({url}) | `{repo}` | {date}")
-    header = "PR | Repository | Date\n:-- | :-- | :--"
-    return header + "\n" + "\n".join(lines)
+    for org_id, name, desc in orgs:
+        lines.append(f"[**{name}**](https://github.com/{org_id}) — {desc}")
+    return "\n\n".join(lines)
 
 
 def main():
@@ -116,12 +84,10 @@ def main():
 
     profile = get_profile()
     pr_count = get_merged_pr_count()
-    contributions = get_top_contributions()
-    recent_prs = get_recent_prs()
+    orgs = check_org_contributions()
 
     readme = replace_section(readme, "STATS", build_stats_section(profile, pr_count))
-    readme = replace_section(readme, "CONTRIBUTIONS", build_contributions_section(contributions))
-    readme = replace_section(readme, "RECENT", build_recent_section(recent_prs))
+    readme = replace_section(readme, "CONTRIBUTIONS", build_contributions_section(orgs))
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     readme = replace_section(readme, "UPDATED", f"*Last updated: {now}*")
@@ -129,7 +95,7 @@ def main():
     with open(readme_path, "w") as f:
         f.write(readme)
 
-    print(f"README updated — {pr_count} PRs, {len(contributions)} repos, {len(recent_prs)} recent PRs")
+    print(f"README updated — {pr_count} PRs, {len(orgs)} orgs")
 
 
 if __name__ == "__main__":
