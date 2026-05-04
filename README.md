@@ -2,16 +2,7 @@
 
 **Principal Data Scientist** · Red Hat · Boston, MA
 
-Building at the intersection of AI, open source, and production ML systems.
-I work on synthetic data generation, agentic frameworks, and making AI accessible on hybrid cloud platforms.
-
----
-
-### By the numbers
-
-<!-- STATS -->
-**324** merged PRs · **101** public repos · **51** followers
-<!-- /STATS -->
+Building agentic AI frameworks and making production AI accessible on hybrid cloud — in open source.
 
 ---
 
